@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Movies</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Star Wars Movies</h1>
+    <ul id="movie-list"></ul>
+    <p id="movie-details"></p>
+
+    <script>
+        const url = 'https://swapi.dev/api/films/?format=json';
+
+        // Fetch movie data
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const movies = data.results;
+                renderMovies(movies);
+            })
+            .catch(error => console.error(error));
+
+        // Render movie list
+        function renderMovies(movies) {
+            const list = document.getElementById('movie-list');
+            for (const movie of movies) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${movie.title} (${movie.release_date})`;
+                listItem.addEventListener('click', () => showMovieDetails(movie));
+                list.appendChild(listItem);
+            }
+        }
+
+        // Show movie details
+        function showMovieDetails(movie) {
+            const detailsEl = document.getElementById('movie-details');
+            detailsEl.textContent = `Episode: ${movie.episode_id} - ${movie.title}\nRelease Date: ${movie.release_date}`;
+        }
+    </script>
+</body>
+</html>
+
